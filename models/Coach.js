@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 
-const coachSchema = new mongoose.Schema({
-    name: String,
-    email: { type: String, unique: true },
-    password: String,
-    ethnicity: String,
-    ageRange: String,
-    specialization: String, // Example: financial specialization
+const CoachSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  typeOfCoaching: { type: String, required: true },
+  bio: { type: String },
+  experience: { type: Number }
 });
 
-module.exports = mongoose.model('Coach', coachSchema);
+const Coach = mongoose.model('Coach', CoachSchema);
+module.exports = Coach;
