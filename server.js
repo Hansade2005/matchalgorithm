@@ -1,18 +1,24 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const authRoutes = require('./routes/auth');
+const cors = require('cors');
 const path = require('path'); 
+
+const authRoutes = require('./routes/auth');
 const questionRoutes = require('./routes/questionRoutes');
+const clientRoutes = require('./routes/clientRoutes');
+const coachRoutes = require('./routes/coachRoutes');
+
 
 dotenv.config();
 
 const app = express();
+app.use(cors())
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
-mongoose.connect(process.env.Priestly_s_DB, {
+mongoose.connect(process.env.MONGO_URI, { 
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {
@@ -27,29 +33,15 @@ mongoose.connect(process.env.Priestly_s_DB, {
 app.use('/api/auth', authRoutes);
 // 2) Use question routes
 app.use('/api', questionRoutes);
+// 3) Use clientRoute routes
+app.use('/api/clients', clientRoutes);
+// 4) Use coaches routes
+app.use('/api/coaches', coachRoutes);
+
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-// Set EJS as the view engine
-app.set('view engine', 'ejs');
-
-// Set the views directory for EJS templates
-app.set('views', path.join(__dirname, 'views'));
-
-// Middleware to parse form data
-app.use(express.urlencoded({ extended: true }));
-
-// Route to serve the form
-app.get('/', (req, res) => {
-  res.render('index'); // Render the EJS template
-});
-
-
-// Route to handle form submission
-app.post('/submit', (req, res) => {
-  const { name, favoriteColor } = req.body;
-  res.send(`Thank you for submitting, ${name}! Your favorite color is ${favoriteColor}.`);
-});
 

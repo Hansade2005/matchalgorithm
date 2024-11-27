@@ -1,12 +1,12 @@
 const express = require('express');
-const router = express.Router();
-const questionController = require('../controllers/questionController');
+const { createQuestion, getQuestions } = require('../controllers/questionHandle');
 
-// Define routes and map them to controller functions
-router.post('/questions', questionController.createQuestion);
-router.get('/questions', questionController.getAllQuestions);
-router.get('/questions/:id', questionController.getQuestionById);
-router.put('/questions/:id', questionController.updateQuestion);
-router.delete('/questions/:id', questionController.deleteQuestion);
+const router = express.Router();
+
+// Create a new question
+router.post('/', createQuestion);
+
+// Get all questions
+router.get('/', getQuestions);
 
 module.exports = router;
