@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/auth');
 const path = require('path'); 
-
+const questionRoutes = require('./routes/questionRoutes');
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(process.env.Priestly_s_DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(() => {
@@ -21,7 +21,12 @@ mongoose.connect(process.env.MONGO_URI, {
   console.error('Error connecting to MongoDB', err);
 });
 
+
+// App routes
+// 1) Auth route 
 app.use('/api/auth', authRoutes);
+// 2) Use question routes
+app.use('/api', questionRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
@@ -47,3 +52,4 @@ app.post('/submit', (req, res) => {
   const { name, favoriteColor } = req.body;
   res.send(`Thank you for submitting, ${name}! Your favorite color is ${favoriteColor}.`);
 });
+
