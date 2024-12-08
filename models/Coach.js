@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const CoachSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
   typeOfCoaching: { type: String, required: true },
-  bio: { type: String },
-  experience: { type: Number }
+  expertise: [{ type: String, required: true }], // Match expertise with client needs
+  maxClients: { type: Number, default: 5 },
+  currentClients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Client' }],
 });
 
 const Coach = mongoose.model('Coach', CoachSchema);
